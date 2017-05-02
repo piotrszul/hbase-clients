@@ -27,6 +27,8 @@ public abstract class AbstractAuthenticatingClient {
 		// * https://github.com/apache/kafka/blob/e31c0c9bdbad432bc21b583bd3c084f05323f642/clients/src/main/java/org/apache/kafka/common/security/JaasContext.java
 		// * https://github.com/apache/hbase/blob/master/hbase-examples/src/main/java/org/apache/hadoop/hbase/thrift/DemoClient.java
 		
+		// ALSO: For long running processes the kerberos Subject (ticket) needs to be periodically refreshed:
+		// For sample code see: https://github.com/apache/kafka/blob/d5fb7364aebf293c621b804a4585eb9ef1001864/clients/src/main/java/org/apache/kafka/common/security/kerberos/KerberosLogin.java
 		
 		LoginContext lc = new LoginContext("HbaseClient");
 		// attempt authentication
