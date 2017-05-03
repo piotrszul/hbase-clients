@@ -1,8 +1,12 @@
 package examples.hbase.common;
 
 import java.security.PrivilegedAction;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.security.auth.Subject;
+import javax.security.auth.login.AppConfigurationEntry;
+import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 
 
@@ -22,11 +26,37 @@ public abstract class AbstractAuthenticatingClient {
 	public void doAsLogedUser() throws Exception {
 		
 		// NOTE: This implementation uses default JAAS config passed in java property  
-		// but the LoginContext can be also created with a specific configuration or a speficied jaas config file.
-		// For examples check:
-		// * https://github.com/apache/kafka/blob/e31c0c9bdbad432bc21b583bd3c084f05323f642/clients/src/main/java/org/apache/kafka/common/security/JaasContext.java
-		// * https://github.com/apache/hbase/blob/master/hbase-examples/src/main/java/org/apache/hadoop/hbase/thrift/DemoClient.java
+		// but the LoginContext can be also created with a specific configuration:
+		// from: https://github.com/apache/hbase/blob/master/hbase-examples/src/main/java/org/apache/hadoop/hbase/thrift/DemoClient.java
+//	      LoginContext context = new LoginContext("", new Subject(), null,
+//        new Configuration() {
+//          @Override
+//          public AppConfigurationEntry[] getAppConfigurationEntry(String name) {
+//            Map<String, String> options = new HashMap<String, String>();
+//            options.put("useKeyTab", "false");
+//            options.put("storeKey", "false");
+//            options.put("doNotPrompt", "true");
+//            options.put("useTicketCache", "true");
+//            options.put("renewTGT", "true");
+//            options.put("refreshKrb5Config", "true");
+//            options.put("isInitiator", "true");
+//            String ticketCache = System.getenv("KRB5CCNAME");
+//            if (ticketCache != null) {
+//              options.put("ticketCache", ticketCache);
+//            }
+//            options.put("debug", "true");
+//
+//            return new AppConfigurationEntry[]{
+//                new AppConfigurationEntry("com.sun.security.auth.module.Krb5LoginModule",
+//                    AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
+//                    options)};
+//          }
+//});			
 		
+		// or a specific jaas config file.
+		// For examples check:
+		// * https://github.com/apache/hbase/blob/master/hbase-examples/src/main/java/org/apache/hadoop/hbase/thrift/DemoClient.java
+	
 		// ALSO: For long running processes the kerberos Subject (ticket) needs to be periodically refreshed:
 		// For sample code see: https://github.com/apache/kafka/blob/d5fb7364aebf293c621b804a4585eb9ef1001864/clients/src/main/java/org/apache/kafka/common/security/kerberos/KerberosLogin.java
 		
